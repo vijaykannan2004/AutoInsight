@@ -3,3 +3,11 @@ uvicorn[standard]
 pandas
 google-generativeai
 python-multipart
+scikit-learn
+plotly
+matplotlib
+seaborn
+openpyxl
+reportlab
+scipy
+numpy

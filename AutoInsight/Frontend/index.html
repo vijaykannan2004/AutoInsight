@@ -3,308 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AutoInsight - AI-Powered Data Analytics</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
-    <link rel="stylesheet" href="static/style.css">
-    <link rel="stylesheet" href="static/components.css">
-    <meta name="description" content="AI-powered data analytics platform for automated data cleaning, analysis, and insights generation">
+    <title>AutoInsight Professional Dashboard</title>
+    <meta http-equiv="refresh" content="0; url=demo.html">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-attachment: fixed;
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: white;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .loading-text {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
 </head>
 <body>
-    <!-- Header Navigation -->
-    <header class="main-header">
-        <div class="header-content">
-            <div class="brand">
-                <h1>🚗 AutoInsight</h1>
-                <span class="tagline">AI-Powered Data Analytics</span>
-            </div>
-            <nav class="main-nav">
-                <button class="btn btn-ghost premium-hover" id="themeToggle" title="Toggle theme">
-                    ✨ 🌙 Dark Mode
-                </button>
-                <button class="btn btn-ghost premium-hover" id="healthStatus" title="Service status">
-                    🟢 Connected
-                </button>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Upload Section -->
-        <section id="upload" class="tab-content active-section">
-            <div class="section-header">
-                <h2>📂 Upload Dataset</h2>
-                <p class="section-description">
-                    Upload your CSV file to get started with AI-powered data analysis
-                </p>
-            </div>
-
-            <div class="upload-area" id="uploadArea">
-                <div class="upload-box premium-hover glow-effect" id="uploadBox">
-                    <div class="upload-icon pulse">📊</div>
-                    <h3>Drop your CSV file here</h3>
-                    <p>or click to browse</p>
-                    <input type="file" id="csvFile" accept=".csv" hidden>
-                    <button class="btn btn-primary" id="browseBtn">
-                        ✨ Choose File
-                    </button>
-                </div>
-
-                <div class="upload-options" id="uploadOptions" style="display: none;">
-                    <div class="file-info">
-                        <h4>📄 Selected File</h4>
-                        <p id="fileName"></p>
-                        <p id="fileSize"></p>
-                    </div>
-
-                    <div class="analysis-options">
-                        <h4>⚙️ Analysis Options</h4>
-                        <div class="form-group">
-                            <label class="form-label">
-                                <input type="checkbox" id="enhancedAnalysis" checked>
-                                Use Enhanced Analysis
-                            </label>
-                            <small>Advanced data cleaning and AI insights</small>
-                        </div>
-                    </div>
-
-                    <div class="upload-actions">
-                        <button class="btn btn-primary btn-lg premium-hover glow-effect" id="analyzeBtn">
-                            ✨ 🚀 Analyze Dataset
-                        </button>
-                        <button class="btn btn-secondary premium-hover" id="clearBtn">
-                            🔄 Clear
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Progress Indicator -->
-            <div class="progress-container" id="progressContainer" style="display: none;">
-                <div class="progress">
-                    <div class="progress-bar" id="progressBar"></div>
-                </div>
-                <p class="progress-text" id="progressText">Processing your data...</p>
-            </div>
-        </section>
-
-        <!-- Analysis Section -->
-        <section id="analysis" class="tab-content">
-            <div class="section-header">
-                <h2>📊 Data Analysis</h2>
-                <p class="section-description">
-                    Comprehensive insights and statistics about your dataset
-                </p>
-            </div>
-
-            <div id="analysisContent">
-                <!-- Analysis content will be dynamically loaded -->
-                <div class="loading-skeleton" style="height: 200px;"></div>
-                <div class="loading-skeleton" style="height: 200px;"></div>
-            </div>
-        </section>
-
-        <!-- Visualizations Section -->
-        <section id="visualization" class="tab-content">
-            <div class="section-header">
-                <h2>📈 Visualizations</h2>
-                <p class="section-description">
-                    Interactive charts and graphs powered by your data
-                </p>
-            </div>
-
-            <div class="viz-controls" id="vizControls">
-                <div class="control-group">
-                    <label class="form-label">Chart Type</label>
-                    <select id="chartTypeSelect" class="form-select">
-                        <option value="">Select chart type...</option>
-                        <option value="scatter">Scatter Plot</option>
-                        <option value="bar">Bar Chart</option>
-                        <option value="histogram">Histogram</option>
-                        <option value="line">Line Chart</option>
-                        <option value="box">Box Plot</option>
-                        <option value="heatmap">Heatmap</option>
-                        <option value="correlation">Correlation Matrix</option>
-                    </select>
-                </div>
-
-                <div class="control-group">
-                    <label class="form-label">X-Axis</label>
-                    <select id="xAxisSelect" class="form-select">
-                        <option value="">Select column...</option>
-                    </select>
-                </div>
-
-                <div class="control-group">
-                    <label class="form-label">Y-Axis</label>
-                    <select id="yAxisSelect" class="form-select">
-                        <option value="">Select column...</option>
-                    </select>
-                </div>
-
-                <div class="control-group">
-                    <label class="form-label">Color By</label>
-                    <select id="colorSelect" class="form-select">
-                        <option value="">None</option>
-                    </select>
-                </div>
-
-                <button class="btn btn-primary" id="createChartBtn">
-                    📊 Create Chart
-                </button>
-                <button class="btn btn-secondary" id="autoChartsBtn">
-                    🎯 Auto Charts
-                </button>
-            </div>
-
-            <div class="charts-container" id="chartsContainer">
-                <!-- Charts will be dynamically added here -->
-                <div class="empty-state">
-                    <div class="empty-icon">📊</div>
-                    <h3>No Charts Yet</h3>
-                    <p>Create your first chart to start visualizing your data</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Query Section -->
-        <section id="query" class="tab-content">
-            <div class="section-header">
-                <h2>🤖 AI Query</h2>
-                <p class="section-description">
-                    Ask questions about your data in natural language
-                </p>
-            </div>
-
-            <div class="query-container">
-                <div class="query-input-group">
-                    <textarea
-                        id="queryInput"
-                        class="form-textarea"
-                        placeholder="e.g., What's the average salary by department? Or show me trends over time..."
-                        rows="4"
-                    ></textarea>
-                    <button class="btn btn-primary" id="submitQueryBtn">
-                        💬 Ask AI
-                    </button>
-                </div>
-
-                <div class="query-history" id="queryHistory">
-                    <h3>Recent Questions</h3>
-                    <div id="queryHistoryList">
-                        <!-- Query history will be added here -->
-                    </div>
-                </div>
-
-                <div class="query-results" id="queryResults">
-                    <!-- Query results will appear here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Export Section -->
-        <section id="export" class="tab-content">
-            <div class="section-header">
-                <h2>💾 Export</h2>
-                <p class="section-description">
-                    Download your cleaned data, charts, and analysis reports
-                </p>
-            </div>
-
-            <div class="export-container">
-                <div class="export-section">
-                    <h3>📊 Export Data</h3>
-                    <div class="export-options">
-                        <div class="form-group">
-                            <label class="form-label">Format</label>
-                            <select id="dataExportFormat" class="form-select">
-                                <option value="csv">CSV</option>
-                                <option value="excel">Excel</option>
-                                <option value="json">JSON</option>
-                                <option value="parquet">Parquet</option>
-                            </select>
-                        </div>
-                        <button class="btn btn-success" id="exportDataBtn">
-                            📥 Export Data
-                        </button>
-                    </div>
-                </div>
-
-                <div class="export-section">
-                    <h3>📈 Export Charts</h3>
-                    <div class="export-options">
-                        <div class="form-group">
-                            <label class="form-label">Format</label>
-                            <select id="chartExportFormat" class="form-select">
-                                <option value="png">PNG</option>
-                                <option value="svg">SVG</option>
-                                <option value="html">HTML</option>
-                                <option value="pdf">PDF</option>
-                            </select>
-                        </div>
-                        <button class="btn btn-success" id="exportChartsBtn">
-                            📥 Export Charts
-                        </button>
-                    </div>
-                </div>
-
-                <div class="export-section">
-                    <h3>📄 Analysis Report</h3>
-                    <div class="export-options">
-                        <div class="form-group">
-                            <label class="form-label">Format</label>
-                            <select id="reportExportFormat" class="form-select">
-                                <option value="pdf">PDF Report</option>
-                                <option value="html">HTML Report</option>
-                            </select>
-                        </div>
-                        <button class="btn btn-success" id="exportReportBtn">
-                            📥 Generate Report
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Tab Navigation -->
-    <nav class="tab-navigation">
-        <div class="tabs">
-            <button class="tab active premium-hover" data-tab="upload" onclick="AutoInsightUtils.switchTab('upload')">
-                ✨ 📂 Upload
-            </button>
-            <button class="tab premium-hover" data-tab="analysis" onclick="AutoInsightUtils.switchTab('analysis')">
-                ✨ 📊 Analysis
-            </button>
-            <button class="tab premium-hover" data-tab="visualization" onclick="AutoInsightUtils.switchTab('visualization')">
-                ✨ 📈 Visualize
-            </button>
-            <button class="tab premium-hover" data-tab="query" onclick="AutoInsightUtils.switchTab('query')">
-                ✨ 🤖 AI Query
-            </button>
-            <button class="tab premium-hover" data-tab="export" onclick="AutoInsightUtils.switchTab('export')">
-                ✨ 💾 Export
-            </button>
-        </div>
-    </nav>
-
-    <!-- Footer -->
-    <footer class="main-footer">
-        <div class="footer-content">
-            <p>© 2024 AutoInsight - AI-Powered Data Analytics Platform</p>
-            <div class="footer-links">
-                <a href="#" onclick="showHelp()">Help</a>
-                <span>•</span>
-                <a href="#" onclick="showAbout()">About</a>
-                <span>•</span>
-                <a href="#" onclick="showPrivacy()">Privacy</a>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
-    <script src="static/utils.js"></script>
-    <script src="static/charts.js"></script>
-    <script src="static/script.js"></script>
+    <div class="loading-text">
+        ✨ Redirecting to Professional Dashboard...
+    </div>
 </body>
 </html>

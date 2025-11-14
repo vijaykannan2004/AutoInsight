@@ -835,18 +835,49 @@ body.dark-mode::before {
     }
 }
 
-/* Loading and Animation States */
+/* Premium Loading and Animation States */
 .loading-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px) saturate(180%);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
+}
+
+.loading-overlay::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    margin: -30px 0 0 -30px;
+    border: 3px solid rgba(102, 126, 234, 0.1);
+    border-top: 3px solid #667eea;
+    border-radius: 50%;
+    animation: premiumSpin 1s linear infinite;
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+}
+
+.dark-mode .loading-overlay {
+    background: rgba(15, 23, 42, 0.95);
+}
+
+.dark-mode .loading-overlay::before {
+    border-color: rgba(120, 219, 255, 0.1);
+    border-top-color: #78dbff;
+    box-shadow: 0 0 20px rgba(120, 219, 255, 0.3);
+}
+
+@keyframes premiumSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 .fade-in {

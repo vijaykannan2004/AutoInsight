@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoInsight Professional Dashboard - Live Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-attachment: fixed;
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: #1a202c;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glass-container {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 1400px;
+            animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(40px) scale(0.95);
+                opacity: 0;
+                filter: blur(5px);
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+                filter: blur(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: textGradient 3s ease infinite;
+            margin-bottom: 0.5rem;
+        }
+
+        @keyframes textGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 200% 200%;
+            animation: cardGradient 3s ease infinite;
+        }
+
+        @keyframes cardGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.15),
+                        0 8px 32px rgba(31, 38, 135, 0.15),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .charts-section {
+            margin-top: 3rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            position: relative;
+        }
+
+        .chart-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 200% 200%;
+            animation: chartGradient 3s ease infinite;
+            z-index: 10;
+        }
+
+        @keyframes chartGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .chart-container:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.15),
+                        0 8px 32px rgba(31, 38, 135, 0.15),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .chart-content {
+            height: 400px;
+            padding: 1.5rem;
+        }
+
+        .demo-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+            margin: 0.5rem;
+        }
+
+        .demo-button:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .demo-button.pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .action-buttons {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .floating-particle {
+            position: fixed;
+            pointer-events: none;
+            opacity: 0.3;
+            animation: float 6s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .insights-box {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .insights-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .insight-item {
+            background: rgba(102, 126, 234, 0.1);
+            border-left: 3px solid #667eea;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .insight-item:hover {
+            background: rgba(102, 126, 234, 0.15);
+            transform: translateX(5px);
+        }
+
+        @media (max-width: 768px) {
+            .glass-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .logo {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Particles -->
+    <div class="floating-particle" style="top: 10%; left: 10%; animation-delay: 0s;">📊</div>
+    <div class="floating-particle" style="top: 20%; right: 15%; animation-delay: 1s;">📈</div>
+    <div class="floating-particle" style="bottom: 30%; left: 20%; animation-delay: 2s;">💡</div>
+    <div class="floating-particle" style="top: 60%; right: 10%; animation-delay: 3s;">🎯</div>
+    <div class="floating-particle" style="bottom: 20%; right: 25%; animation-delay: 4s;">🚀</div>
+
+    <div class="glass-container">
+        <header class="header">
+            <div class="logo">🚗 AutoInsight</div>
+            <div class="tagline">✨ AI-Powered Professional Analytics Dashboard</div>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="dataPoints">50,234</div>
+                <div class="stat-label">Data Points Analyzed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="insights">12</div>
+                <div class="stat-label">AI Insights Generated</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="charts">8</div>
+                <div class="stat-label">Interactive Charts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="accuracy">98.5%</div>
+                <div class="stat-label">Analysis Accuracy</div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="demo-button pulse" onclick="regenerateData()">
+                🔄 Regenerate Data
+            </button>
+            <button class="demo-button" onclick="addNewChart()">
+                📊 Add Chart
+            </button>
+            <button class="demo-button" onclick="animateStats()">
+                ✨ Animate Stats
+            </button>
+        </div>
+
+        <section class="charts-section">
+            <h2 class="section-title">📊 Dynamic Visualizations</h2>
+            <div class="charts-grid" id="chartsGrid">
+                <div class="chart-container">
+                    <div class="chart-content" id="chart1"></div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-content" id="chart2"></div>
+                </div>
+            </div>
+        </section>
+
+        <div class="insights-box">
+            <h3 class="insights-title">🧠 AI-Powered Insights</h3>
+            <div class="insight-item">
+                <strong>📈 Trend Analysis:</strong> Your data shows a 23% increase in user engagement over the last quarter, with peak performance on weekends.
+            </div>
+            <div class="insight-item">
+                <strong>🎯 Key Finding:</strong> The 'Product A' category outperforms others by 156% in conversion rates, suggesting strong market preference.
+            </div>
+            <div class="insight-item">
+                <strong>💡 Recommendation:</strong> Focus marketing efforts on the top 20% of users who generate 80% of revenue for maximum ROI.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data generation
+        function generateSampleData() {
+            return {
+                x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                y: [12000, 19000, 15000, 25000, 22000, 30000, 28000, 35000, 32000, 38000, 42000, 45000],
+                categories: ['Product A', 'Product B', 'Product C', 'Product D'],
+                values: [45000, 32000, 28000, 38000]
+            };
+        }
+
+        // Create initial charts
+        const sampleData = generateSampleData();
+
+        // Chart 1: Line Chart
+        const trace1 = {
+            x: sampleData.x,
+            y: sampleData.y,
+            type: 'scatter',
+            mode: 'lines+markers',
+            name: 'Revenue Trend',
+            line: {
+                color: 'rgba(102, 126, 234, 0.8)',
+                width: 4
+            },
+            marker: {
+                color: '#667eea',
+                size: 8,
+                line: {
+                    color: 'white',
+                    width: 2
+                }
+            },
+            fill: 'tozeroy',
+            fillcolor: 'rgba(102, 126, 234, 0.1)'
+        };
+
+        const layout1 = {
+            title: {
+                text: '📈 Monthly Revenue Trend',
+                font: {
+                    size: 18,
+                    color: '#1a202c'
+                }
+            },
+            paper_bgcolor: 'rgba(255, 255, 255, 0)',
+            plot_bgcolor: 'rgba(255, 255, 255, 0)',
+            xaxis: {
+                gridcolor: 'rgba(0,0,0,0.1)',
+                color: '#64748b'
+            },
+            yaxis: {
+                gridcolor: 'rgba(0,0,0,0.1)',
+                color: '#64748b'
+            },
+            margin: { t: 50, r: 30, b: 50, l: 80 }
+        };
+
+        Plotly.newPlot('chart1', [trace1], layout1, {responsive: true});
+
+        // Chart 2: Bar Chart
+        const trace2 = {
+            x: sampleData.categories,
+            y: sampleData.values,
+            type: 'bar',
+            marker: {
+                color: ['#667eea', '#764ba2', '#f093fb', '#78dbff'],
+                line: {
+                    color: 'white',
+                    width: 2
+                }
+            },
+            text: sampleData.values.map(v => '$' + v.toLocaleString()),
+            textposition: 'auto'
+        };
+
+        const layout2 = {
+            title: {
+                text: '🎯 Product Performance',
+                font: {
+                    size: 18,
+                    color: '#1a202c'
+                }
+            },
+            paper_bgcolor: 'rgba(255, 255, 255, 0)',
+            plot_bgcolor: 'rgba(255, 255, 255, 0)',
+            xaxis: {
+                gridcolor: 'rgba(0,0,0,0.1)',
+                color: '#64748b'
+            },
+            yaxis: {
+                gridcolor: 'rgba(0,0,0,0.1)',
+                color: '#64748b'
+            },
+            margin: { t: 50, r: 30, b: 50, l: 80 }
+        };
+
+        Plotly.newPlot('chart2', [trace2], layout2, {responsive: true});
+
+        // Interactive functions
+        function regenerateData() {
+            const newData = generateSampleData();
+
+            // Update chart 1
+            const trace1_update = {
+                y: newData.y
+            };
+            Plotly.restyle('chart1', trace1_update, [0]);
+
+            // Update chart 2
+            const trace2_update = {
+                y: newData.values,
+                text: newData.values.map(v => '$' + v.toLocaleString())
+            };
+            Plotly.restyle('chart2', trace2_update, [0]);
+
+            // Animate stats
+            animateStats();
+        }
+
+        function addNewChart() {
+            const chartsGrid = document.getElementById('chartsGrid');
+
+            const newChart = document.createElement('div');
+            newChart.className = 'chart-container';
+            newChart.style.animation = 'slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            newChart.innerHTML = '<div class="chart-content" id="chart3"></div>';
+
+            chartsGrid.appendChild(newChart);
+
+            // Create new chart
+            const pieTrace = {
+                labels: ['Desktop', 'Mobile', 'Tablet', 'Other'],
+                values: [45, 35, 15, 5],
+                type: 'pie',
+                marker: {
+                    colors: ['#667eea', '#764ba2', '#f093fb', '#78dbff'],
+                    line: {
+                        color: 'white',
+                        width: 2
+                    }
+                }
+            };
+
+            const pieLayout = {
+                title: {
+                    text: '📱 Device Usage',
+                    font: {
+                        size: 18,
+                        color: '#1a202c'
+                    }
+                },
+                paper_bgcolor: 'rgba(255, 255, 255, 0)',
+                margin: { t: 50, r: 30, b: 50, l: 30 }
+            };
+
+            setTimeout(() => {
+                Plotly.newPlot('chart3', [pieTrace], pieLayout, {responsive: true});
+            }, 300);
+        }
+
+        function animateStats() {
+            const stats = [
+                { id: 'dataPoints', end: 50234 + Math.floor(Math.random() * 10000) },
+                { id: 'insights', end: 12 + Math.floor(Math.random() * 8) },
+                { id: 'charts', end: 8 + Math.floor(Math.random() * 5) },
+                { id: 'accuracy', end: 95 + Math.random() * 4, suffix: '%' }
+            ];
+
+            stats.forEach(stat => {
+                const element = document.getElementById(stat.id);
+                const start = 0;
+                const end = stat.end;
+                const duration = 2000;
+                const startTime = Date.now();
+
+                function animate() {
+                    const now = Date.now();
+                    const progress = Math.min((now - startTime) / duration, 1);
+                    const current = start + (end - start) * progress;
+
+                    if (stat.suffix === '%') {
+                        element.textContent = current.toFixed(1) + '%';
+                    } else {
+                        element.textContent = Math.floor(current).toLocaleString();
+                    }
+
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    }
+                }
+
+                animate();
+            });
+        }
+
+        // Initial animation
+        setTimeout(animateStats, 1000);
+
+        // Add ripple effect to buttons
+        document.querySelectorAll('.demo-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(255, 255, 255, 0.6)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple-animation 0.6s linear';
+                ripple.style.pointerEvents = 'none';
+
+                this.style.position = 'relative';
+                this.style.overflow = 'hidden';
+                this.appendChild(ripple);
+
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Add ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple-animation {
+                from {
+                    transform: scale(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

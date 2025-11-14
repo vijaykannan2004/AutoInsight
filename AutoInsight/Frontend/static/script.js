@@ -13,6 +13,9 @@ class AutoInsightApp {
     async init() {
         console.log('🚗 AutoInsight App Initializing...');
 
+        // Add entrance animation
+        this.addEntranceAnimation();
+
         // Initialize theme
         AutoInsightUtils.initTheme();
 
@@ -25,7 +28,106 @@ class AutoInsightApp {
         // Load saved active tab
         this.loadActiveTab();
 
+        // Add premium interactions
+        this.addPremiumInteractions();
+
         console.log('✅ AutoInsight App Ready');
+    }
+
+    addEntranceAnimation() {
+        // Animate header appearance
+        const header = document.querySelector('.main-header');
+        if (header) {
+            header.style.opacity = '0';
+            header.style.transform = 'translateY(-100%)';
+            setTimeout(() => {
+                header.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                header.style.opacity = '1';
+                header.style.transform = 'translateY(0)';
+            }, 100);
+        }
+
+        // Animate main content
+        const mainContent = document.querySelector('.main-content');
+        if (mainContent) {
+            mainContent.style.opacity = '0';
+            mainContent.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                mainContent.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                mainContent.style.opacity = '1';
+                mainContent.style.transform = 'translateY(0)';
+            }, 300);
+        }
+
+        // Animate tabs
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach((tab, index) => {
+            tab.style.opacity = '0';
+            tab.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                tab.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                tab.style.opacity = '1';
+                tab.style.transform = 'translateY(0)';
+            }, 600 + (index * 100));
+        });
+    }
+
+    addPremiumInteractions() {
+        // Add ripple effect to buttons
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('btn')) {
+                this.createRippleEffect(e.target, e);
+            }
+        });
+
+        // Add parallax effect to background
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+
+            const bodyBefore = document.querySelector('body::before');
+            if (document.body.style.getPropertyValue('--mouse-x') === '') {
+                document.body.style.setProperty('--mouse-x', `${x * 20}px`);
+                document.body.style.setProperty('--mouse-y', `${y * 20}px`);
+            }
+        });
+
+        // Add smooth scroll reveal
+        this.setupScrollReveal();
+    }
+
+    createRippleEffect(button, event) {
+        const ripple = document.createElement('span');
+        const rect = button.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = event.clientX - rect.left - size / 2;
+        const y = event.clientY - rect.top - size / 2;
+
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        ripple.classList.add('ripple');
+
+        button.style.position = 'relative';
+        button.style.overflow = 'hidden';
+        button.appendChild(ripple);
+
+        setTimeout(() => ripple.remove(), 600);
+    }
+
+    setupScrollReveal() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                    entry.target.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Observe cards and containers
+        const elementsToReveal = document.querySelectorAll('.analysis-card, .chart-container, .upload-box');
+        elementsToReveal.forEach(el => observer.observe(el));
     }
 
     async checkHealthStatus() {

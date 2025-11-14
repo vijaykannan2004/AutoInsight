@@ -1,0 +1,11 @@
+EmployeeID,Department,Experience,Salary,PerformanceRating
+101,Sales,3,40000,3
+102,Sales,5,45000,4
+103,HR,2,35000,2
+104,IT,7,65000,5
+105,IT,6,62000,4
+106,Finance,8,70000,5
+107,Finance,10,72000,5
+108,Sales,4,43000,3
+109,HR,5,41000,3
+110,IT,9,68000,5

@@ -1,0 +1,101 @@
+/* ===== AutoInsight Dashboard - Modern Theme ===== */
+
+:root {
+  --primary: #4f46e5;
+  --secondary: #06b6d4;
+  --bg: #f5f7fa;
+  --text: #111827;
+  --card-bg: #fff;
+}
+
+.dark-mode {
+  --bg: #1e1e2f;
+  --text: #e5e7eb;
+  --card-bg: #2c2c3a;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  margin: 0;
+  transition: background 0.3s, color 0.3s;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--primary);
+  color: #fff;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+header h1 {
+  font-size: 1.5rem;
+}
+
+.toggle-btn {
+  background: var(--secondary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.toggle-btn:hover {
+  background: #0891b2;
+}
+
+main {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.upload-box {
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 2rem;
+  text-align: center;
+  transition: background 0.3s;
+}
+
+input[type="file"] {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.result {
+  margin-top: 2rem;
+  padding: 1rem 2rem;
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.result h2 {
+  color: var(--primary);
+}
+
+.loading {
+  color: var(--secondary);
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+pre {
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+}

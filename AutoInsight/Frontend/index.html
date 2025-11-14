@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AutoInsight Dashboard</title>
+  <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+  <header>
+    <h1>🚗 AutoInsight Dashboard</h1>
+    <button id="themeToggle" class="toggle-btn">🌙 Dark Mode</button>
+  </header>
+
+  <main>
+    <section class="upload-box">
+      <h2>📂 Upload CSV Dataset</h2>
+      <form id="uploadForm">
+        <input type="file" id="csvFile" accept=".csv">
+        <br><br>
+        <button type="submit" class="toggle-btn">Analyze</button>
+      </form>
+    </section>
+
+    <section class="result" id="result"></section>
+  </main>
+
+  <script src="static/script.js"></script>
+</body>
+</html>
